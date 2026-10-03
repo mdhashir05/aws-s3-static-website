@@ -1,173 +1,197 @@
-# AWS S3 Static Website Architecture
+# AWS S3 Static Website Hosting
 
-A college cloud project demonstrating how to deploy a static HTML, CSS, and JavaScript website using **Amazon S3 Static Website Hosting**.
+A hands-on AWS cloud project demonstrating the deployment of a static website using **Amazon S3 Static Website Hosting**. The website uses HTML, CSS, and JavaScript and is served through an S3 website endpoint without requiring a traditional web server.
 
-## 1. Project Objective
+## Project Overview
 
-The objective of this project is to deploy a simple static website using Amazon S3 and make it accessible through an S3 website endpoint.
+This project demonstrates how Amazon S3 can host static website content using object storage and website hosting configuration. The implementation includes creating an S3 bucket, uploading website files, enabling static website hosting, configuring public read access, and verifying the website through a browser.
 
-The project demonstrates:
+**Project status:** The website was successfully deployed and tested during the project. Check the current availability of the endpoint before presenting it as a live website.
 
-- Creating an Amazon S3 bucket
-- Uploading static website files
-- Enabling S3 Static Website Hosting
-- Configuring public read access with an S3 bucket policy
-- Accessing and testing the deployed website through the S3 website endpoint
+## Project Objectives
 
-## 2. AWS Service Used
+- Create and configure an Amazon S3 bucket.
+- Upload HTML, CSS, and JavaScript website files.
+- Enable S3 Static Website Hosting.
+- Configure the index document.
+- Set up a bucket policy for public object read access.
+- Test website accessibility and client-side functionality through the S3 website endpoint.
 
-This project intentionally uses **Amazon S3 only** for the cloud implementation.
+## AWS Services Used
 
-| Service | Purpose |
+This project intentionally uses **Amazon S3 only** for its cloud implementation.
+
+| Service or Feature | Purpose |
 |---|---|
-| Amazon S3 | Stores and serves the static website files |
-| S3 Static Website Hosting | Publishes the static website through an S3 website endpoint |
+| Amazon S3 | Stores the website files |
+| S3 Static Website Hosting | Serves the static website through an S3 website endpoint |
+| S3 Bucket Policy | Controls public read access to website objects |
 
-No EC2, Lambda, CloudFront, RDS, VPC, or other AWS services are used.
+No EC2, Lambda, CloudFront, RDS, VPC, or other AWS services were used in this implementation.
 
-## 3. Architecture
+## Architecture
 
 ![AWS S3 Static Website Architecture](architecture-diagram.png)
 
 ### Architecture Flow
 
-**User / Internet → S3 Website Endpoint → Amazon S3 Static Website Hosting → Web Browser / Static Website**
+**User / Internet → S3 Website Endpoint → Amazon S3 Static Website Hosting → Website Content Rendered in Browser**
 
-The S3 bucket contains the three website files:
+The S3 bucket contains three website files:
 
-- `index.html`
-- `style.css`
-- `script.js`
+- `index.html` — Main webpage structure and content.
+- `style.css` — Website layout, styling, and appearance.
+- `script.js` — Client-side JavaScript functionality.
 
-The `index.html` file acts as the entry point. The CSS and JavaScript files provide the styling and client-side functionality.
+The browser loads the HTML document and retrieves the associated CSS and JavaScript files from the S3 website endpoint.
 
-## 4. Configuration Details
-
-### S3 Bucket Configuration
+## S3 Bucket Configuration
 
 | Configuration | Value |
 |---|---|
 | AWS Service | Amazon S3 |
 | Bucket Name | `hashir-static-website` |
-| AWS Region | `us-east-1` — US East (N. Virginia) |
-| Hosting Type | Bucket hosting |
-| Static Website Hosting | Enabled |
+| AWS Region | `us-east-1` (US East — N. Virginia) |
+| Hosting Type | S3 bucket website hosting |
+| Static Website Hosting | Enabled during deployment |
 | Index Document | `index.html` |
-| Uploaded Files | `index.html`, `style.css`, `script.js` |
-| Storage Class | Standard |
+| Website Files | `index.html`, `style.css`, `script.js` |
+| Storage Class | S3 Standard |
 | Requester Pays | Disabled |
 
 ### Website Endpoint
+
+The website was accessed through the following S3 website endpoint:
 
 ```text
 http://hashir-static-website.s3-website-us-east-1.amazonaws.com
 ```
 
-### Bucket Policy
+The endpoint reflects the original project configuration. Its current availability depends on the bucket, hosting configuration, and access permissions still being in place.
 
-Public read access was configured using an S3 bucket policy with:
-
-```text
-Effect: Allow
-Principal: *
-Action: s3:GetObject
-Resource: arn:aws:s3:::hashir-static-website/*
-```
-
-This allows visitors to retrieve the objects required by the static website.
-
-> **Security note:** This project intentionally uses public read access because the assignment demonstrates S3 static website hosting through the S3 website endpoint. Do not upload private or sensitive information to this bucket.
-
-## 5. Website Files
-
-The following files were uploaded to the S3 bucket:
-
-```text
-index.html
-style.css
-script.js
-```
+## Website Implementation
 
 ### `index.html`
 
-Contains the main HTML structure and content of the website.
+Contains the main structure and content of the static website. It acts as the website's entry point and references the stylesheet and JavaScript file.
 
 ### `style.css`
 
-Contains the styling used to control the website's appearance.
+Defines the visual appearance of the website, including styling, layout, and presentation.
 
 ### `script.js`
 
-Contains the client-side JavaScript functionality used by the website.
+Provides client-side JavaScript functionality executed in the visitor's browser.
 
-## 6. Deployment Procedure
+## Deployment and Configuration
 
-1. Created an S3 bucket named `hashir-static-website`.
-2. Selected the `us-east-1` (US East — N. Virginia) region.
-3. Uploaded `index.html`, `style.css`, and `script.js`.
-4. Enabled **S3 Static Website Hosting**.
-5. Configured `index.html` as the index document.
-6. Configured the S3 bucket policy to allow `s3:GetObject` access.
-7. Opened the generated S3 website endpoint in a web browser.
-8. Verified that the static website loaded successfully.
+The following implementation steps were completed during the project:
 
-## 7. Screenshots / Evidence
+1. Created an S3 bucket named `hashir-static-website` in the `us-east-1` region.
+2. Uploaded `index.html`, `style.css`, and `script.js` to the bucket.
+3. Enabled S3 Static Website Hosting.
+4. Configured `index.html` as the index document.
+5. Configured a bucket policy granting public read access to website objects.
+6. Accessed the website through the generated S3 website endpoint.
+7. Tested the website in a browser and verified that the page loaded successfully.
 
-### 7.1 S3 Bucket
+## Bucket Policy and Access Control
 
-The S3 bucket `hashir-static-website` was created in the `us-east-1` region.
+Public read access was configured to allow visitors to retrieve the website files.
+
+The policy used the following access pattern:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::hashir-static-website/*"
+    }
+  ]
+}
+```
+
+This policy grants anonymous read access to objects within the specified bucket. It does not grant visitors permission to upload, modify, or delete objects.
+
+**Security consideration:** Public access was intentionally configured for this static website demonstration. Only public website assets should be stored in such a bucket. AWS Block Public Access settings and account-level policies must also permit the intended configuration.
+
+## Implementation Evidence
+
+### 1. S3 Bucket
 
 ![S3 Bucket](screenshots/01-s3-bucket.png)
 
-### 7.2 Uploaded Website Files
+Documents the creation of the `hashir-static-website` bucket in the selected AWS region.
 
-The bucket contains `index.html`, `style.css`, and `script.js`.
+### 2. Uploaded Website Files
 
 ![S3 Objects](screenshots/02-s3-objects.png)
 
-### 7.3 Static Website Hosting
+Shows the website files stored in the bucket: `index.html`, `style.css`, and `script.js`.
 
-Static website hosting is enabled using bucket hosting, with `index.html` configured as the website entry document.
+### 3. Static Website Hosting
 
 ![Static Website Hosting](screenshots/03-static-website-hosting.png)
 
-### 7.4 Bucket Policy
+Documents the static website hosting configuration and the `index.html` index document.
 
-The bucket policy grants public `s3:GetObject` access to objects in the website bucket.
+### 4. Bucket Policy
 
 ![S3 Bucket Policy](screenshots/04-bucket-policy.png)
 
-### 7.5 Deployed Website
+Shows the bucket policy configured to allow public read access to the website objects.
 
-The website was successfully accessed through the S3 website endpoint.
+### 5. Deployed Website
 
 ![Deployed Website](screenshots/05-deployed-website.png)
 
-## 8. Testing Results
+Provides evidence that the static website was successfully opened through the S3 website endpoint during testing.
 
-The deployed website was tested through the generated S3 website endpoint.
+## Testing Results
 
-| Test Case | Expected Result | Actual Result | Status |
-|---|---|---|---|
-| S3 bucket creation | Bucket is available in `us-east-1` | Bucket created successfully | PASS |
-| Website files upload | Three website files are present | `index.html`, `style.css`, and `script.js` are present | PASS |
-| Static website hosting | S3 website hosting is enabled | Hosting is enabled | PASS |
-| Index document | `index.html` loads as the home page | Website home page displayed | PASS |
-| Website endpoint | Endpoint should open the website | Website opened successfully | PASS |
-| CSS loading | Website styling should be applied | Styling displayed correctly | PASS |
-| JavaScript functionality | JavaScript should execute in the browser | Website JavaScript functionality was available | PASS |
+The website was tested during deployment to verify the S3 configuration and browser behavior.
 
-## 9. Result
+| Test Case | Expected Result | Recorded Result |
+|---|---|---|
+| S3 bucket creation | Bucket created in `us-east-1` | Passed during testing |
+| Website file upload | Three website files stored in the bucket | Passed during testing |
+| Static website hosting | Hosting enabled | Passed during testing |
+| Index document | `index.html` displayed as the home page | Passed during testing |
+| Website endpoint | Website opens in a browser | Passed during testing |
+| CSS loading | Website styling appears correctly | Passed during testing |
+| JavaScript functionality | Client-side JavaScript executes | Passed during testing |
 
-The static website was successfully deployed using **Amazon S3 Static Website Hosting**. The website is accessible through the S3 website endpoint, and the HTML, CSS, and JavaScript files are served from the S3 bucket.
+These results describe the original deployment tests; they do not independently confirm the current state of the AWS resources.
 
-## 10. Conclusion
+## Key Skills Demonstrated
 
-This project demonstrates the deployment of a static website using Amazon S3 without requiring a traditional web server. Amazon S3 provides object storage and static website hosting, allowing the HTML, CSS, and JavaScript files to be served directly to users through an S3 website endpoint.
+- Amazon S3 bucket creation and configuration.
+- Static website hosting using an S3 website endpoint.
+- Uploading and organizing website assets in object storage.
+- Configuring index document settings.
+- Writing and applying an S3 bucket policy.
+- Understanding public object access and AWS access controls.
+- Deploying and testing an HTML, CSS, and JavaScript website.
+- Verifying cloud deployments through console screenshots and browser testing.
+- Documenting cloud architecture and implementation results.
 
----
+## Security and Limitations
 
-### Project Architecture Summary
+- The S3 website endpoint uses HTTP rather than HTTPS.
+- The configured public-read policy makes website objects publicly retrievable.
+- S3 static website hosting serves static content and does not execute server-side PHP, Python, or other backend application code.
+- Sensitive files, credentials, and private information must not be uploaded to a publicly readable bucket.
+- HTTPS delivery and a custom domain could be considered as future improvements, potentially using Amazon CloudFront.
+
+## Conclusion
+
+This project demonstrates how Amazon S3 can be used to host and serve a static website without provisioning or managing a traditional web server. By configuring bucket hosting, uploading website assets, applying a bucket policy, and testing the endpoint, the project illustrates the fundamentals of static web hosting and cloud-based object storage on AWS.
+
+## Project Architecture Summary
 
 ```text
 User / Internet
@@ -181,12 +205,37 @@ Amazon S3
        v
 Static Website Hosting
        |
-       +--> index.html
-       +--> style.css
-       +--> script.js
+       +----> index.html
+       |
+       +----> style.css
+       |
+       +----> script.js
        |
        v
-Web Browser / Static Website
+Website Rendered in Browser
 ```
 
-**HTML + CSS + JavaScript deployed as a static website using Amazon S3**
+## Repository Structure
+
+```text
+aws-s3-static-website/
+├── README.md
+├── architecture-diagram.png
+├── index.html
+├── style.css
+├── script.js
+└── screenshots/
+    ├── 01-s3-bucket.png
+    ├── 02-s3-objects.png
+    ├── 03-static-website-hosting.png
+    ├── 04-bucket-policy.png
+    └── 05-deployed-website.png
+```
+
+---
+
+**Author:** Mohammed Hashir  
+
+**Project:** AWS S3 Static Website Hosting  
+
+**Cloud Platform:** Amazon Web Services (AWS)
